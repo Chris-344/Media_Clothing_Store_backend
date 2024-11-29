@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Collection } from "mongoose";
 
 const productSchema=new mongoose.Schema({
     productName:{
@@ -25,5 +25,5 @@ const productSchema=new mongoose.Schema({
     },
 
 
-},{timestamps:true})
+},{timestamps:true},{Collection:"product"})
 export const product=mongoose.model("Product",productSchema)

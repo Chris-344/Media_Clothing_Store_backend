@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import { hash } from "bcrypt";
+import mongoose, { Collection } from "mongoose";
 
 const userSchema = new mongoose.Schema({
     userName: {
@@ -7,7 +8,8 @@ const userSchema = new mongoose.Schema({
     },
     userEmail: {
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     userPassword: {
         type: String,
@@ -22,10 +24,21 @@ const userSchema = new mongoose.Schema({
     },
     userMobileNumber: {
         type: Number,
+        unique:true
     },
     cart: {
         type: mongoose.ObjectId,
         ref: 'CartItem'
-    }
-},{timestamps:true})
+    },
+    
+},{timestamps:true},{Collection:"user"})
+
+userSchema.pre('save', async function (next)
+{
+
+    const hashedPassword = await hash(this.password, 10)
+    this.password = hashedPassword
+    next()
+})
+
 export const  User=mongoose.model("User",userSchema)
