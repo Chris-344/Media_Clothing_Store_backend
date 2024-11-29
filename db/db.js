@@ -17,7 +17,7 @@ export const connectDB = async () =>
     {
         // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
         await connect(process.env.DB_URL, clientOptions);
-        await client.db('media_clothing_store')
+        client.db('media_clothing_store')
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally
     {
