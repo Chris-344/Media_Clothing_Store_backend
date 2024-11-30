@@ -5,7 +5,6 @@ import { deleteProduct } from "../controllers/deleteProduct.controller.js";
 import { getProduct } from "../controllers/getProduct.controller.js";
 import { updateProduct } from "../controllers/updateProduct.controller.js";
 
-
 const router=Router()
 router.post('/addProduct',upload.fields([
     {

@@ -29,6 +29,10 @@ const productSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    productSellerId:{
+        type:mongoose.Types.ObjectId,
+        refer:"Seller"
+    }
 
 },{timestamps:true},{collection:"product"})
 export const Product=mongoose.model("Product",productSchema)
