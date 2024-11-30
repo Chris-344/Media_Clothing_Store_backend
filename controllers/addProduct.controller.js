@@ -6,12 +6,12 @@ import  connectDB  from "../db/db.js";
 export const addProduct = async (req, res) => {
     const isConnected = mongoose.connection.readyState;
 
-    // if (isConnected !== 1)
-    // {
-    //     await connectDB();
-    //     console.log("DB is not connected connecting again");
-    //     return
-    // }
+    if (isConnected !== 1)
+    {
+        await connectDB();
+        console.log("DB is not connected connecting again");
+        return
+    }
     const { name, description, price, category, seller, material } = req.body;
     const thumbnailLocalPath = req.files?.thumbnail[0]?.path;
     const imagesLocalPath = req.files?.images[0]?.path;
