@@ -1,8 +1,9 @@
 import { compare } from "bcrypt";
-import { User } from "../model/user.model.js";
+
 import jwt from 'jsonwebtoken'
 import mongoose from "mongoose";
 import { connectDB } from "../db/db.js";
+import { User } from "../models/user.model.js";
 
 export const Login = async (req, res) =>
 {

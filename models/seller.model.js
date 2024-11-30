@@ -1,4 +1,4 @@
-import mongoose, { Collection } from "mongoose";
+import mongoose  from "mongoose";
 
 const sellerSchema = new mongoose.Schema({
     sellerName: {
@@ -25,5 +25,5 @@ const sellerSchema = new mongoose.Schema({
         type: mongoose.ObjectId,
         ref: 'Product'
     },
-}, { timestamps: true },{Collection:"seller"})
+}, { timestamps: true },{collection:"seller"})
 export const Seller=mongoose.models("Seller",sellerSchema)

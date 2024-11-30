@@ -1,4 +1,4 @@
-import mongoose, { Collection, Schema } from "mongoose";
+import mongoose ,{Schema } from "mongoose";
 
 const cartItemSchema = new mongoose.Schema({
     userCart:{
@@ -18,5 +18,5 @@ const cartItemSchema = new mongoose.Schema({
     ]
 
 
-}, { timestamps: true },{Collection:"cartItem"})
+}, { timestamps: true },{collection:"cartItem"})
 export const CartItem=mongoose.models("CartItem",cartItemSchema)

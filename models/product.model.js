@@ -1,4 +1,4 @@
-import mongoose, { Collection } from "mongoose";
+import mongoose  from "mongoose";
 
 const productSchema=new mongoose.Schema({
     productName:{
@@ -13,17 +13,22 @@ const productSchema=new mongoose.Schema({
         type:Number,
         required:true
     },
+    productThumbnail:{
+        type:String
+    },
+    productImages:{
+        type:String
+    },
     productCategory:{
         type:String
+    },
+    productMaterial:{
+        type:String,
     },
     productSeller:{
         type:String,
         required:true
     },
-    productMaterial:{
-        type:String,
-    },
 
-
-},{timestamps:true},{Collection:"product"})
-export const product=mongoose.model("Product",productSchema)
+},{timestamps:true},{collection:"product"})
+export const Product=mongoose.model("Product",productSchema)

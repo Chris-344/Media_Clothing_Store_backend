@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { User } from "../model/user.model.js";
+import { User } from "../models/user.model.js";
 import { connectDB } from "../db/db.js";
 
 export const SignUpUser = async (req, res) => {
