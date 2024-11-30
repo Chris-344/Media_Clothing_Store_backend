@@ -1,28 +1,25 @@
+import mongoose from "mongoose";
 
-import { connect, disconnect } from 'mongoose';
-import 'dotenv/config'
-import { MongoClient, ServerApiVersion } from 'mongodb';
-const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
-const client = new MongoClient(process.env.DB_URL, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
-
-export const connectDB = async () =>
+const connectDB = async () =>
 {
     try
     {
-        // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-        await connect(process.env.DB_URL, clientOptions);
-        client.db('media_clothing_store')
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally
+        const connectionInstance = await mongoose.connect(process.env.MONGODB_URI, {
+            serverSelectionTimeoutMS: 30000, // Increased timeout to 30 seconds
+            socketTimeoutMS: 45000,
+            connectTimeoutMS: 30000,
+            maxPoolSize: 10
+        });
+
+        // Set default operation timeout at the global level
+        mongoose.set('bufferTimeoutMS', 30000);
+
+        console.log(`✅ MongoDB connected! DB: ${connectionInstance.connection.name}`);
+    } catch (error)
     {
-        // Ensures that the client will close when you finish/error
-        await disconnect();
+        console.error("MongoDB connection error:", error);
+        process.exit(1);
     }
-}
-connectDB().catch(console.dir);
+};
+
+export default connectDB;

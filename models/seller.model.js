@@ -25,5 +25,16 @@ const sellerSchema = new mongoose.Schema({
         type: mongoose.ObjectId,
         ref: 'Product'
     },
+    sellerPassword:{
+        type:String,
+        required:true
+    }
 }, { timestamps: true },{collection:"seller"})
+sellerSchema.pre('save', async function (next)
+{
+    const hashedPassword = await hash(this.password, 10)
+    this.password = hashedPassword
+    next()
+})
+
 export const Seller=mongoose.models("Seller",sellerSchema)

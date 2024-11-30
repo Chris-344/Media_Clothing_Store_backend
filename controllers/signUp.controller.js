@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
-import { connectDB } from "../db/db.js";
+import  connectDB  from "../db/db.js";
 
 export const SignUpUser = async (req, res) => {
     const isConnected = mongoose.connection.readyState;
@@ -17,10 +17,10 @@ export const SignUpUser = async (req, res) => {
         }
 
         const dbRes = await User.create({
-            userName: name,
+            userName: name.toLoweCase() ,
             userPassword: password,
             userEmail: email,
-            userAddress: address,
+            userAddress: address.toLowerCase(),
             userMobileNumber: mobileNumber
         });
 
