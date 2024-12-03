@@ -5,15 +5,23 @@ import { deleteProduct } from "../controllers/deleteProduct.controller.js";
 import { getProduct } from "../controllers/getProduct.controller.js";
 import { updateProduct } from "../controllers/updateProduct.controller.js";
 
-const router=Router()
-router.post('/addProduct',upload.fields([
-    {
-        name:"thumbnail",
-        maxCount:1
-    },
-    {
-        name:"images",
-        maxCount:5
-    }
-]),addProduct).get("/getProduct",getProduct).delete('/deleteProduct',deleteProduct).put("/updateProduct",updateProduct)
-export default router
+const router = Router();
+router
+  .post(
+    "/addProduct",
+    upload.fields([
+      {
+        name: "thumbnail",
+        maxCount: 1,
+      },
+      {
+        name: "images",
+        maxCount: 5,
+      },
+    ]),
+    addProduct,
+  )
+  .get("/getProduct", getProduct)
+  .delete("/deleteProduct", deleteProduct)
+  .put("/updateProduct", updateProduct);
+export default router;
