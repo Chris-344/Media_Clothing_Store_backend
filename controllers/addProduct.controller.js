@@ -12,18 +12,33 @@ export const addProduct = async (req, res) => {
     return;
   }
   const { name, description, price, category, seller, material } = req.body;
+  
   const thumbnailLocalPath = req.files?.thumbnail[0]?.path;
-  const imagesLocalPath = req.files?.images[0]?.path;
-
-  if (!thumbnailLocalPath || !imagesLocalPath) {
+  let imagesLocalPathArr =[]
+  if(req.files){
+    for (let i=0;i<req.files.images.length;i++){
+      imagesLocalPathArr .push(req.files?.images[i]?.path)
+      console.log(req.files.images[i].path);
+    }
+   
+  }
+  
+  
+  if (!thumbnailLocalPath || !imagesLocalPathArr) {
     return res
       .status(400)
       .json({ message: "Thumbnail and images are required" });
   }
-
+  
   try {
+    let images=[];
+    let imageUrl;
     const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
-    const images = await uploadOnCloudinary(imagesLocalPath);
+    for (let i=0;i<req.files.images.length;i++){
+      imageUrl=await uploadOnCloudinary(imagesLocalPathArr[i])
+        images.push(imageUrl.url)
+    
+    }
 
     if (!thumbnail || !images) {
       return res
@@ -32,9 +47,9 @@ export const addProduct = async (req, res) => {
           message: "Failed to upload thumbnail and images to Cloudinary",
         });
     }
-
+console.log(images);
     console.log(
-      `Product created: ${name}, ${description}, ${category}, ${price}, ${material}, ${seller}, ${images.url}, ${thumbnail.url}`,
+      `Product created: ${name}, ${description}, ${category}, ${price}, ${material}, ${seller}, ${images}, ${thumbnail.url}`,
     );
 
     const newProduct = await Product.create({
@@ -44,7 +59,7 @@ export const addProduct = async (req, res) => {
       productCategory: category,
       productMaterial: material,
       productThumbnail: thumbnail.url,
-      productImages: images.url,
+      productImages: images,
       productSeller: seller,
     });
 

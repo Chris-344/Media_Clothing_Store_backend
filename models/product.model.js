@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema(
       type: String,
     },
     productImages: {
-      type: String,
+      type: [String],
     },
     productCategory: {
       type: String,

@@ -16,12 +16,21 @@ router
       },
       {
         name: "images",
-        maxCount: 5,
+        maxCount: 6,
       },
     ]),
     addProduct,
   )
   .get("/getProduct", getProduct)
   .delete("/deleteProduct", deleteProduct)
-  .put("/updateProduct", updateProduct);
+  .put("/updateProduct", upload.fields([
+    {
+      name: "thumbnail",
+      maxCount: 1,
+    },
+    {
+      name: "images",
+      maxCount: 5,
+    },
+  ]),updateProduct);
 export default router;
