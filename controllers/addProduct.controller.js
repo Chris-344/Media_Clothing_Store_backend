@@ -36,7 +36,9 @@ export const addProduct = async (req, res) => {
     const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
     for (let i=0;i<req.files.images.length;i++){
       imageUrl=await uploadOnCloudinary(imagesLocalPathArr[i])
-        images.push(imageUrl.url)
+        images.unshift(imageUrl.url)
+        console.log("image Url",imageUrl.url);
+        console.log("\n images:",images);
     
     }
 
