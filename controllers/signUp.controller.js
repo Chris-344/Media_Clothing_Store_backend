@@ -22,7 +22,7 @@ export const SignUpUser = async (req, res) => {
         userName: name.toLoweCase(),
         userPassword: password,
         userEmail: email,
-        userAddress: address.toLowerCase(),
+        
         userMobileNumber: mobileNumber,
         userProfile: profile.url,
       });
@@ -32,7 +32,7 @@ export const SignUpUser = async (req, res) => {
         userName: name.toLoweCase(),
         userPassword: password,
         userEmail: email,
-        userAddress: address.toLowerCase(),
+        
         userMobileNumber: mobileNumber,
       });
       res.status(200).json({ message: "User registered successfully", dbRes });
@@ -41,3 +41,29 @@ export const SignUpUser = async (req, res) => {
     res.status(400).json({ message: "Failed to sign up", error });
   }
 };
+
+export const add_address=async(req,res)=>{
+  const isConnected = mongoose.connection.readyState;
+  if (isConnected !== 1) {
+    console.log("DB is not connected, connecting again");
+    await connectDB();
+  }
+
+
+  try {
+    const {userId,country,city,streetName,landMark,pinCode,roadName}=req.body;
+    User.updateOne(userId,
+      {
+        addrCountry:  country,
+        addrState: state,
+        addrCity: city,
+        addrCity:streetName,
+        addrPinCode: pinCode,
+        addrLandmark: landMark,
+        addrRoad:roadName
+      }
+    )
+  } catch (error) {
+    
+  }
+}

@@ -6,22 +6,22 @@ const sellerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    sellerEmail:{
+      type:String,
+      required:['@']
+    },
     sellerPAN_No: {
       type: String,
       required: ["A-Z"],
     },
-    sellerProductStock: {
-      type: Number,
-      default: 0,
+    sellerContactNumber:{
+      type:Number
     },
-    sellerAddress: {
-      country: String,
-      city: String,
-      pinCode: Number,
-      streetName: String,
-      roadName: String,
-      landMark: String,
-    },
+    addrCountry: String,
+      addrState: String,
+      addrCity: String,
+      addrPinCode: Number,
+      addrLandmark: String,
     sellerProduct: {
       type: mongoose.ObjectId,
       ref: "Product",
@@ -40,4 +40,4 @@ sellerSchema.pre("save", async function (next) {
   next();
 });
 
-export const Seller = mongoose.models("Seller", sellerSchema);
+export const Seller = mongoose.model("Seller", sellerSchema);

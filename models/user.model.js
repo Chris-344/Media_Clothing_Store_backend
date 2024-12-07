@@ -19,13 +19,11 @@ const userSchema = new mongoose.Schema(
     userProfile: {
       type: String,
     },
-    userAddress: {
-      country: String,
-      state: String,
-      city: String,
-      pinCode: Number,
-      landmark: String,
-    },
+      addrCountry: String,
+      addrState: String,
+      addrCity: String,
+      addrPinCode: Number,
+      addrLandmark: String,
     userMobileNumber: {
       type: Number,
       unique: true,

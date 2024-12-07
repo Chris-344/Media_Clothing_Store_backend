@@ -48,7 +48,7 @@ export const Login = async (req, res) => {
           secure: true,
           sameSite: "strict",
         });
-        return res.json({ Login: true });
+        return res.json({data:user, Login: true });
       }
     } catch (error) {
       res.status(400).json({ error: error.message });

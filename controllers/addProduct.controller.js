@@ -12,7 +12,6 @@ export const addProduct = async (req, res) => {
     return;
   }
   const { name, description, price, category, seller, material } = req.body;
-  
   const thumbnailLocalPath = req.files?.thumbnail[0]?.path;
   let imagesLocalPathArr =[]
   if(req.files){
@@ -20,9 +19,7 @@ export const addProduct = async (req, res) => {
       imagesLocalPathArr .push(req.files?.images[i]?.path)
       console.log(req.files.images[i].path);
     }
-   
   }
-  
   
   if (!thumbnailLocalPath || !imagesLocalPathArr) {
     return res

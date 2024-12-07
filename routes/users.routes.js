@@ -5,4 +5,5 @@ const router = Router();
 
 router.post("/login", Login).post("/signUp", SignUpUser);
 router.get("/cartItems").put("/addCart");
+router.post('add_address',)
 export default router;
