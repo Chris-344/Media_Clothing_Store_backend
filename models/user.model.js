@@ -19,11 +19,11 @@ const userSchema = new mongoose.Schema(
     userProfile: {
       type: String,
     },
-      addrCountry: String,
-      addrState: String,
-      addrCity: String,
-      addrPinCode: Number,
-      addrLandmark: String,
+    addrCountry: String,
+    addrState: String,
+    addrCity: String,
+    addrPinCode: Number,
+    addrLandmark: String,
     userMobileNumber: {
       type: Number,
       unique: true,
@@ -33,13 +33,12 @@ const userSchema = new mongoose.Schema(
       ref: "CartItem",
     },
   },
-  { timestamps: true },
-  { collection: "user" },
+  { timestamps: true, collection: "user" }
 );
 
 userSchema.pre("save", async function (next) {
-  const hashedPassword = await hash(this.password, 10);
-  this.password = hashedPassword;
+  const hashedPassword = await hash(this.userPassword, 10);
+  this.userPassword = hashedPassword;
   next();
 });
 
