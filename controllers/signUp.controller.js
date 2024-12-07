@@ -11,7 +11,7 @@ export const SignUpUser = async (req, res) => {
     await connectDB();
   }
   try {
-    const { name, email, password, address, mobileNumber } = req.body;
+    const { name, email, password,  mobileNumber } = req.body;
     const profileLocalPath = req.files?.profileImage[0]?.path;
     if (!name || !password || !email || !address || !mobileNumber) {
       return res.status(400).json({ error: "All fields are required" });
@@ -32,7 +32,6 @@ export const SignUpUser = async (req, res) => {
         userName: name.toLoweCase(),
         userPassword: password,
         userEmail: email,
-        
         userMobileNumber: mobileNumber,
       });
       res.status(200).json({ message: "User registered successfully", dbRes });
