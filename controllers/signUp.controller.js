@@ -1,11 +1,10 @@
-import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import connectDB from "../db/db.js";
 import { uploadOnCloudinary } from "../util/cloudinary.js";
+import mongoose from "mongoose";
 
 export const SignUpUser = async (req, res) => {
   const isConnected = mongoose.connection.readyState;
-
   if (isConnected !== 1) {
     console.log("DB is not connected, connecting again");
     await connectDB();
@@ -17,8 +16,6 @@ export const SignUpUser = async (req, res) => {
     if (!name || !email || !password || !mobileNumber) {
       return res.status(400).json({ error: "All fields are required" });
     }
-    console.log(name, email, password, mobileNumber,profileLocalPath);
-
     if (profileLocalPath) {
       const profile = await uploadOnCloudinary(profileLocalPath);
       const dbRes = await User.create({
@@ -30,19 +27,17 @@ export const SignUpUser = async (req, res) => {
       });
       res.status(200).json({ message: "User registered successfully", dbRes });
     } else {
-      console.log(User);
       const dbRes = await User.create({
         userName: name.toLowerCase(),
         userPassword: password,
-        userEmail: email.toLowerCase(),
+        userEmail: email,
         userMobileNumber: mobileNumber,
       });
       console.log(dbRes);
-
-      
       res.status(200).json({ message: "User registered successfully", dbRes });
     }
   } catch (error) {
+    console.error("Error creating user:", error);
     res.status(400).json({ message: "Failed to sign up", error });
   }
 };
@@ -70,6 +65,7 @@ export const add_address = async (req, res) => {
     );
     res.status(200).json({ message: "Address added successfully", updateResult });
   } catch (error) {
+    console.error("Error adding address:", error);
     res.status(400).json({ message: "Failed to add address", error });
   }
 };

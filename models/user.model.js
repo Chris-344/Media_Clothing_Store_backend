@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
     addrPinCode: Number,
     addrLandmark: String,
     userMobileNumber: {
-      type: Number,
+      type: String,
       unique: true,
     },
     cart: {
