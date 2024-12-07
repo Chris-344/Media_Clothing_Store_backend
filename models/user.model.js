@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.ObjectId,
       ref: "CartItem",
     },
+    orders: [{ productId: mongoose.ObjectId, quantity: Number, price: Number, date: { type: Date, default: Date.now } }]
   },
   { timestamps: true, collection: "user" }
 );
