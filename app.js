@@ -4,14 +4,15 @@ import dotenv from "dotenv";
 import cors from "cors";
 const app = express();
 dotenv.config();
-app.use(
-  cors({
-    origin: [`${process.env.WHITE_LIST_CLIENT}`],
-    credentials: true,
-  }),
-);
+// app.use(
+//   cors({
+//     origin: [`${process.env.WHITE_LIST_CLIENT}`],
+//     credentials: true,
+//   }),
+// );
+app.use(cors())
 app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 //Routes

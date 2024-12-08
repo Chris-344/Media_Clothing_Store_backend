@@ -1,7 +1,7 @@
 ﻿import mongoose from "mongoose";
-import connectDB from "../db/db";
-import { User } from "../models/user.model";
-import { createBillPDF } from "../util/billgenerater";
+import connectDB from "../db/db.js";
+import { User } from "../models/user.model.js";
+import { createBillPDF } from "../util/billgenerater.js";
 
 
 export const placeOrder = async (req, res) =>

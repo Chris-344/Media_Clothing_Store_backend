@@ -3,7 +3,7 @@
 // Register Seller
 export const registerSeller = async (req, res) =>
 {
-    const { name, email, password, PAN, contactNumber, address } = req.body;
+    const { name, email, password, PAN, contactNumber,  } = req.body;
 
     try
     {
@@ -15,19 +15,19 @@ export const registerSeller = async (req, res) =>
         }
 
         // Create new seller
-        const newSeller = await Seller.create({
+        const seller = await Seller.create({
             sellerName: name,
             sellerEmail: email,
             sellerPassword: password,
             sellerPAN:PAN,
             sellerContactNumber: contactNumber,
-            sellerAddress: address,
+            
         });
 
         
 
 
-        res.status(201).json({data:newSeller, message: 'Seller registered successfully' });
+        res.status(200).json({seller, message: 'Seller registered successfully' });
     } catch (error)
     {
         res.status(500).json({ message: 'Server error', error });
