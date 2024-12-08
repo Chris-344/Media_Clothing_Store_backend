@@ -10,25 +10,26 @@ export const SignUpUser = async (req, res) => {
     await connectDB();
   }
   try {
-    const { name, email, password, mobileNumber } = req.body;
-    console.log(name, email, password, mobileNumber);
+    const { name, email, password,  mobileNumber } = req.body;
+  console.log( name, email, password,  mobileNumber)
     const profileLocalPath = req.files?.profileImage[0]?.path;
-    if (!name || !email || !password || !mobileNumber) {
+    if (!name || !password || !email || !mobileNumber) {
       return res.status(400).json({ error: "All fields are required" });
     }
     if (profileLocalPath) {
       const profile = await uploadOnCloudinary(profileLocalPath);
       const dbRes = await User.create({
-        userName: name.toLowerCase(),
+        userName: name.toLoweCase(),
         userPassword: password,
         userEmail: email,
+      
         userMobileNumber: mobileNumber,
         userProfile: profile.url,
       });
       res.status(200).json({ message: "User registered successfully", dbRes });
     } else {
       const dbRes = await User.create({
-        userName: name.toLowerCase(),
+        userName: name.toLoweCase(),
         userPassword: password,
         userEmail: email,
         userMobileNumber: mobileNumber,
