@@ -22,6 +22,8 @@ const userSchema = new mongoose.Schema(
     addrCountry: String,
     addrState: String,
     addrCity: String,
+    addrStreetName:String,
+    addrRoad:String,
     addrPinCode: Number,
     addrLandmark: String,
     userMobileNumber: {

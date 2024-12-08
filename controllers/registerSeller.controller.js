@@ -3,8 +3,8 @@
 // Register Seller
 export const registerSeller = async (req, res) =>
 {
-    const { name, email, password, PAN, contactNumber,  } = req.body;
-
+    const { name, email, password, PAN, contactNumber  } = req.body;
+console.log( name, email, password, PAN, contactNumber );
     try
     {
         // Check if seller already exists
@@ -13,7 +13,6 @@ export const registerSeller = async (req, res) =>
         {
             return res.status(400).json({ message: 'Seller already exists' });
         }
-
         // Create new seller
         const seller = await Seller.create({
             sellerName: name,
@@ -21,12 +20,7 @@ export const registerSeller = async (req, res) =>
             sellerPassword: password,
             sellerPAN:PAN,
             sellerContactNumber: contactNumber,
-            
         });
-
-        
-
-
         res.status(200).json({seller, message: 'Seller registered successfully' });
     } catch (error)
     {

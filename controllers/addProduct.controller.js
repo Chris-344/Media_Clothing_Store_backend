@@ -4,67 +4,72 @@ import { uploadOnCloudinary } from "../util/cloudinary.js";
 import connectDB from "../db/db.js";
 
 export const addProduct = async (req, res) => {
-  const isConnected = mongoose.connection.readyState;
+    try {
+        const isConnected = mongoose.connection.readyState;
+        if (isConnected !== 1) {
+            await connectDB();
+            console.log("DB connected successfully");
+        }
 
-  if (isConnected !== 1) {
-    await connectDB();
-    console.log("DB is not connected connecting again");
-    return;
-  }
-  const { name, description, price, category, seller, material } = req.body;
-  const thumbnailLocalPath = req.files?.thumbnail[0]?.path;
-  let imagesLocalPathArr =[]
-  if(req.files){
-    for (let i=0;i<req.files.images.length;i++){
-      imagesLocalPathArr .push(req.files?.images[i]?.path)
-      console.log(req.files.images[i].path);
-    }
-  }
-  
-  if (!thumbnailLocalPath || !imagesLocalPathArr) {
-    return res
-      .status(400)
-      .json({ message: "Thumbnail and images are required" });
-  }
-  
-  try {
-    let images=[];
-    let imageUrl;
-    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
-    for (let i=0;i<req.files.images.length;i++){
-      imageUrl=await uploadOnCloudinary(imagesLocalPathArr[i])
-        images.unshift(imageUrl.url)
-        console.log("image Url",imageUrl.url);
-        console.log("\n images:",images);
-    
-    }
+        // Validate required fields
+        const { name, description, price, category, material } = req.body;
+        if (!name || !description || !price || !category || !material) {
+            return res.status(400).json({ 
+                message: "All fields are required" 
+            });
+        }
 
-    if (!thumbnail || !images) {
-      return res
-        .status(500)
-        .json({
-          message: "Failed to upload thumbnail and images to Cloudinary",
+        // Validate files
+        if (!req.files?.thumbnail?.[0] || !req.files?.images || req.files.images.length === 0) {
+            return res.status(400).json({ 
+                message: "Thumbnail and at least one image are required" 
+            });
+        }
+
+        // Upload thumbnail
+        const thumbnailResult = await uploadOnCloudinary(req.files.thumbnail[0].path);
+        if (!thumbnailResult?.url) {
+            return res.status(500).json({ 
+                message: "Failed to upload thumbnail" 
+            });
+        }
+
+        // Upload images
+        const imageResults = await Promise.all(
+            req.files.images.map(file => uploadOnCloudinary(file.path))
+        );
+
+        const imageUrls = imageResults
+            .filter(result => result?.url)
+            .map(result => result.url);
+
+        if (imageUrls.length === 0) {
+            return res.status(500).json({ 
+                message: "Failed to upload product images" 
+            });
+        }
+
+        // Create product
+        const newProduct = await Product.create({
+            productName: name,
+            productDescription: description,
+            productPrice: price,
+            productCategory: category,
+            productMaterial: material,
+            productThumbnail: thumbnailResult.url,
+            productImages: imageUrls,
+        });
+
+        res.status(201).json({ 
+            message: "Product added successfully", 
+            product: newProduct 
+        });
+
+    } catch (error) {
+        console.error("Error adding product:", error);
+        res.status(500).json({ 
+            message: "Failed to add product", 
+            error: error.message 
         });
     }
-console.log(images);
-    console.log(
-      `Product created: ${name}, ${description}, ${category}, ${price}, ${material}, ${seller}, ${images}, ${thumbnail.url}`,
-    );
-
-    const newProduct = await Product.create({
-      productName: name,
-      productDescription: description,
-      productPrice: price,
-      productCategory: category,
-      productMaterial: material,
-      productThumbnail: thumbnail.url,
-      productImages: images,
-      productSeller: seller,
-    });
-
-    res.status(201).json({ message: "Product added successfully", newProduct });
-  } catch (error) {
-    console.error("Error adding product:", error);
-    res.status(500).json({ message: "Failed to add product", error });
-  }
 };

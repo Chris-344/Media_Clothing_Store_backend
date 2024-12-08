@@ -12,12 +12,12 @@ const sellerSchema = new mongoose.Schema(
     },
     sellerPAN_No: {
       type: String,
-      required: ["A-Z"],
+      required:  true,
     },
     sellerContactNumber:{
       type:Number
     },
-    addrCountry: String,
+      addrCountry: String,
       addrState: String,
       addrCity: String,
       addrPinCode: Number,

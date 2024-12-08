@@ -22,7 +22,6 @@ export const SignUpUser = async (req, res) => {
         userName: name.toLoweCase(),
         userPassword: password,
         userEmail: email,
-      
         userMobileNumber: mobileNumber,
         userProfile: profile.url,
       });

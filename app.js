@@ -11,9 +11,11 @@ dotenv.config();
 //   }),
 // );
 app.use(cors())
-app.use(json());
-app.use(urlencoded({ extended: true }));
+// app.use(json());
+// app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.json({ limit: '50mb' })); // Increase limit to 50MB
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
 //Routes
 import userRouter from "./routes/users.routes.js";
