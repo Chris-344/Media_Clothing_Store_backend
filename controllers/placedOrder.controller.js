@@ -1,7 +1,7 @@
 ﻿import mongoose from "mongoose";
 import connectDB from "../db/db.js";
 import { User } from "../models/user.model.js";
-import { createBillPDF } from "../util/billgenerater.js";
+import { createBillPDF } from "../util/billGenerate.js";
 import { unlinkSync } from "fs";
 
 export const placeOrder = async (req, res) =>
@@ -36,7 +36,7 @@ export const placeOrder = async (req, res) =>
         }
 
         // Find user and handle if not found
-        const user = await User.findById(userId);
+        const user = await User.findById({_id:userId});
         if (!user)
         {
             return res.status(404).json({ message: "User not found" });
@@ -75,10 +75,11 @@ export const placeOrder = async (req, res) =>
 
         // Save user and generate PDF
         await user.save();
-        const pdfPath = createBillPDF(orderForPDF, user);
-
+        
+        const filename = `order_bill.pdf`; 
+        const pdfPath = path.join(__dirname, '../public/uploads/bills', filename);
         // Send the PDF file to the client
-        res.download(pdfPath, 'bill.pdf', (err) =>
+        res.download(pdfPath,  filename, (err) =>
         {
             if (err)
             {
