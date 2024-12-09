@@ -1,10 +1,9 @@
 ﻿import PDFDocument from 'pdfkit';
 import fs from 'fs';
 
-export const createBillPDF = (order, user) =>
-{
+export const createBillPDF = (order, user) => {
     const doc = new PDFDocument();
-    const fileName = `bill_${order._id}.pdf`;
+    const fileName = `bill.pdf`;
 
     doc.pipe(fs.createWriteStream(fileName));
 
@@ -12,19 +11,22 @@ export const createBillPDF = (order, user) =>
         align: 'center',
     });
 
-    doc.fontSize(12).text(`Order ID: ${order._id}`, {
+    doc.fontSize(12).text(`Order ID: ${order._id || new Date().getTime()}`, {
         align: 'left',
     });
 
-    doc.text(`Name: ${user.userName}`);
-    doc.text(`Email: ${user.userEmail}`);
+    doc.text(`Name: ${user.username}`);
+    doc.text(`Email: ${user.email}`);
     doc.text(`Date: ${new Date(order.date).toLocaleString()}`);
     doc.text('---');
 
-    order.cartItems.forEach((item, index) =>
-    {
-        doc.text(`${index + 1}. ${item.productName} - ${item.quantity} x ₹${item.price}`);
-    });
+    if (order.cartItems && order.cartItems.length > 0) {
+        order.cartItems.forEach((item, index) => {
+            doc.text(`${index + 1}. ${item.productName} - ${item.quantity || 1} x ₹${item.price}`);
+        });
+    } else {
+        doc.text('No items in the cart.');
+    }
 
     doc.text('---');
     doc.text(`Items Price: ₹${order.itemsPrice}`);
@@ -35,17 +37,3 @@ export const createBillPDF = (order, user) =>
 
     console.log(`Bill generated: ${fileName}`);
 };
-// // Example usage
-// const exampleOrder = {
-//     id: '12345',
-//     userName: 'John Doe',
-//     userEmail: 'john.doe@example.com',
-//     date: Date.now(),
-//     products: [
-//         { name: 'Product 1', quantity: 2, price: 100 },
-//         { name: 'Product 2', quantity: 1, price: 200 },
-//     ],
-//     totalPrice: 400,
-// };
-
-// createBillPDF(exampleOrder);

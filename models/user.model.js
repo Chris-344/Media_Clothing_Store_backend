@@ -42,16 +42,15 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        // unique: true,
         trim: true
     },
     email: {
         type: String,
         required: true,
-        // unique: true,
+        unique: true,
         trim: true
     },
-    mobileNo:{
+    mobileNo: {
         type: Number,
         required: true,
     },
@@ -59,8 +58,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    profile:{
-        type:String
+    addrCountry:  String,
+    addrState: String,
+    addrCity:  String,
+    addrStreetName:  String,
+    addrRoad:  String,
+    addrPinCode:  String,
+    addrLandmark:  String,
+    profile: {
+        type: String
     },
     orders: [orderSchema],  // Define orders as an array of orderSchema
     cart: [{
@@ -71,13 +77,12 @@ const userSchema = new mongoose.Schema({
         quantity: Number
     }]
 }, { timestamps: true });
- 
 
-userSchema.pre("save", async function (next)
-{
-  const hashedPassword = await hash(this.password, 10);
-  this.password = hashedPassword;
-  next();
+userSchema.pre("save", async function (next) {
+    const hashedPassword = await hash(this.password, 10);
+    this.password = hashedPassword;
+    next();
 });
 
 export const User = mongoose.model("User", userSchema);
+

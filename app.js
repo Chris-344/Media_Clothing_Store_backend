@@ -21,7 +21,16 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 import userRouter from "./routes/users.routes.js";
 import productsRouter from "./routes/products.routes.js";
 import sellerRouter from "./routes/seller.routes.js";
+// import { User } from "./models/user.model.js";
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/products", productsRouter);
 app.use("/api/v1/seller", sellerRouter);
+
+
+// for test 
+// app.get('/',(req,res)=>{
+// const user =User.find()
+// console.log(user);
+// res.json(user)
+// })
 export { app };

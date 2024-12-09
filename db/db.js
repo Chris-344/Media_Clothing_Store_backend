@@ -7,6 +7,9 @@ const connectDB = async () => {
       socketTimeoutMS: 45000,
       connectTimeoutMS: 30000,
       maxPoolSize: 10,
+      // UseUnifiedTopology: true, // Enable for improved connection stability
+      // useCreateIndex: true, // Deprecated in Mongoose 6
+      // useFindAndModify: false, // Deprecated in Mongoose 6
     });
 
     // Set default operation timeout at the global level
