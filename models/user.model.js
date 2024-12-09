@@ -1,45 +1,73 @@
 import { hash } from "bcrypt";
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
-  {
-    userName: {
-      type: String,
-      required: true,
+const orderSchema = new mongoose.Schema({
+    productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
     },
-    userEmail: {
-      type: String,
-      required: true,
-      unique: true,
+    quantity: {
+        type: Number,
+        required: true,
+        default: 1
     },
-    userPassword: {
-      type: String,
-      required: true,
+    itemsPrice: {
+        type: Number,
+        required: true
     },
-    userProfile: {
-      type: String,
+    shippingPrice: {
+        type: Number,
+        required: true
     },
-    addrCountry: String,
-    addrState: String,
-    addrCity: String,
-    addrStreetName:String,
-    addrRoad:String,
-    addrPinCode: Number,
-    addrLandmark: String,
-    userMobileNumber: {
-      type: String,
-      unique: true,
+    taxPrice: {
+        type: Number,
+        required: true
     },
-    cart: {
-      type: mongoose.ObjectId,
-      ref: "CartItem",
+    paymentMethod: {
+        type: String,
+        required: true
     },
-    orders: [{ productId: mongoose.ObjectId, quantity: Number, price: Number, date: { type: Date, default: Date.now } }]
-  },
-  { timestamps: true, collection: "user" }
-);
+    totalPrice: {
+        type: Number,
+        required: true
+    },
+    orderDate: {
+        type: Date,
+        default: Date.now
+    }
+});
 
-userSchema.pre("save", async function (next) {
+const userSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    orders: [orderSchema],  // Define orders as an array of orderSchema
+    cart: [{
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        },
+        quantity: Number
+    }]
+}, { timestamps: true });
+ 
+
+userSchema.pre("save", async function (next)
+{
   const hashedPassword = await hash(this.userPassword, 10);
   this.userPassword = hashedPassword;
   next();

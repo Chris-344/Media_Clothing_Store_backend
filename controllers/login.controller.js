@@ -23,6 +23,7 @@ export const Login = async (req, res) =>
 
   try
   {
+    console.log(email, password);
     const user = await User.findOne({ userEmail: email });
     console.log("result ", user);
 
