@@ -42,18 +42,25 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         trim: true
     },
     email: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         trim: true
+    },
+    mobileNo:{
+        type: Number,
+        required: true,
     },
     password: {
         type: String,
         required: true
+    },
+    profile:{
+        type:String
     },
     orders: [orderSchema],  // Define orders as an array of orderSchema
     cart: [{
@@ -68,8 +75,8 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", async function (next)
 {
-  const hashedPassword = await hash(this.userPassword, 10);
-  this.userPassword = hashedPassword;
+  const hashedPassword = await hash(this.password, 10);
+  this.password = hashedPassword;
   next();
 });
 

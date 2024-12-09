@@ -24,7 +24,7 @@ export const Login = async (req, res) =>
   try
   {
     console.log(email, password);
-    const user = await User.findOne({ userEmail: email });
+    const user = await User.findOne({ email: email });
     console.log("result ", user);
 
     if (!user)
@@ -32,7 +32,7 @@ export const Login = async (req, res) =>
       return res.status(400).json({ message: "User not found" });
     }
 
-    const savedPassword = user.userPassword;
+    const savedPassword = user.password;
     console.log("password", savedPassword);
 
     const isValid = await compare(password, savedPassword);

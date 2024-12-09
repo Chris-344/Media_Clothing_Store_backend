@@ -38,7 +38,9 @@ export const placeOrder = async (req, res) => {
 
         // Create orders from cart items
         const orders = cartItems.map(item => ({
-            productId: item.id,
+            // productId: item._id   ,
+            productId: '6752f71837e10eb77265d68f'   ,
+
             quantity: item.quantity || 1,
             itemsPrice,
             shippingPrice,
