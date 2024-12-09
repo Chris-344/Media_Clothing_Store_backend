@@ -4,7 +4,7 @@ import fs from 'fs';
 export const createBillPDF = async (order, user, filePath) => {
   try {
     const doc = new PDFDocument();
-
+    console.log("file",filePath);
     doc.pipe(fs.createWriteStream(filePath));
 
     doc.fontSize(20).text('Bill', { align: 'center' });
@@ -34,8 +34,8 @@ export const createBillPDF = async (order, user, filePath) => {
     doc.text(`Shipping Price: ₹${order.shippingPrice}`);
     doc.text(`Tax Price: ₹${order.taxPrice}`);
     doc.text(`Total Price: ₹${order.totalPrice}`);
-
-    await doc.end(); // Use await to ensure PDF generation is complete
+    doc.pipe(res)
+      doc.end(); // Use await to ensure PDF generation is complete
 
     console.log(`Bill generated: ${filePath}`);
   } catch (error) {
