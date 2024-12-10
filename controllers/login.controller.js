@@ -22,8 +22,8 @@ export const Login = async (req, res) => {
         console.log(email, password);
 
         // Find user by email
-        // const user = await User.findOne({ email:email });
-        const user = await User.findOne({_id:'6756e5476ef82984aa55702c' });
+        const user = await User.findOne({ email:email });
+        // const user = await User.findOne({_id:'6756e5476ef82984aa55702c' });
         
         console.log("result ", user);
         // console.log("result1 ", user1);
@@ -33,15 +33,15 @@ export const Login = async (req, res) => {
         }
 
         const savedPassword = user.password;
-        console.log("password", user.password);
+        console.log("password", password);
         console.log("saved password", savedPassword);
 
-        // const isValid = await compare(password, savedPassword);
-        // console.log("is valid", isValid);
+        const isValid = await compare(password, savedPassword);
+        console.log("is valid", isValid);
 
-        // if (!isValid) {
-        //     return res.status(400).json({ message: "Invalid credentials" });
-        // }
+        if (!isValid) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
 
         res.status(200).json({ message: "success", user });
     } catch (error) {
