@@ -86,34 +86,9 @@ export const placeOrder = async (req, res) =>
         // Save user
         await user.save();
 
-        // Generate PDF
-        const filename = `order_bill.pdf`;
-        const pdfPath = path.join(__dirname, '../public/bills', filename);
-        createBillPDF(orderForPDF, user, pdfPath,res);
-        res.setHeader('Content-Type', 'application/pdf');
-        // Send PDF file to the client
-        res.download(pdfPath, filename, (err) =>
-        {
-            if (err)
-            {
-                console.error('Error sending PDF:', err);
-                fs.unlinkSync(pdfPath); // Remove the PDF file on error
-                return res.status(500).send('Error sending PDF');
-            }
-        });
-
-        // Remove the bill PDF after successful download
-        if(pdfPath){
-            fs.unlinkSync(pdfPath);
-        }
-        // setTimeout(() =>
-        // {
-        //     res.status(200).json({
-        //         message: "Order placed successfully",
-        //         orders: user.orders,
-        //     });
-        // }, 1000)
-
+    
+        createBillPDF(orderForPDF, user);
+        res.json({message:"success"}).status(200)
     } catch (error)
     {
         console.error("Error placing order:", error);
