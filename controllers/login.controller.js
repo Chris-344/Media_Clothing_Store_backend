@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connectDB from "../db/db.js";
 import { User } from "../models/user.model.js";
 
+
 export const Login = async (req, res) => {
     const isConnected = mongoose.connection.readyState;
 
@@ -36,7 +37,7 @@ export const Login = async (req, res) => {
         console.log("password", password);
         console.log("saved password", savedPassword);
 
-        const isValid = await compare(password, savedPassword);
+        const isValid = await  compare(password,savedPassword);
         console.log("is valid", isValid);
 
         if (!isValid) {
