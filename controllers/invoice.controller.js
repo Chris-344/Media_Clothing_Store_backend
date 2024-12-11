@@ -52,7 +52,7 @@ export const invoice = (req, res) =>
                             }
                         });
                     }
-                }, 100000); // Delay to ensure the file is sent before deletion
+                }, 30000); // Delay to ensure the file is sent before deletion
             }
         });
     } else
