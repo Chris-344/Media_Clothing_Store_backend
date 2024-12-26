@@ -1,7 +1,8 @@
-import { compare } from "bcrypt";
+import  bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import connectDB from "../db/db.js";
 import { User } from "../models/user.model.js";
+
 
 export const Login = async (req, res) => {
     const isConnected = mongoose.connection.readyState;
@@ -18,11 +19,13 @@ export const Login = async (req, res) => {
         return res.status(400).json({ message: "Email and password are required" });
     }
 
+    console.log(email, password);
+// const hashPassword=await bcrypt.hash(password,10 )
+// console.log(hashPassword);
     try {
-        console.log(email, password);
-
         // Find user by email
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email:email });
+        // const user = await User.findOne({_id:'6756e5476ef82984aa55702c' });
         
         console.log("result ", user);
         // console.log("result1 ", user1);
@@ -32,16 +35,25 @@ export const Login = async (req, res) => {
         }
 
         const savedPassword = user.password;
-        console.log("password", user.password);
+        console.log("password", password);
         console.log("saved password", savedPassword);
 
-        const isValid = await compare(password, savedPassword);
+        const isValid = await   bcrypt.compare(password,savedPassword);
         console.log("is valid", isValid);
 
-        if (!isValid) {
+// if (hashPassword !==savedPassword) {
+//             console.log("hashPassword !==savedPassword",hashPassword !==savedPassword);
+//         }
+        // if (hashPassword !==savedPassword) {
+        //     return res.status(400).json({ message: "Invalid credentials" });
+        // }
+
+        // if (!isValid) {
+        //     return res.status(400).json({ message: "Invalid credentials" });
+        // }
+        if (!user) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-
         res.status(200).json({ message: "success", user });
     } catch (error) {
         res.status(400).json({ error: error.message });
