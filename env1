@@ -1,0 +1,6 @@
+# "mongodb+srv://@mediaclothingstore.@mediaclothingstore.adfvw.mongodb.net/"
+MONGODB_URI="mongodb+srv://123qwe123:123qwe123@mediaclothingstore.adfvw.mongodb.net/?retryWrites=true&w=majority&appName=MediaClothingStore"
+CLOUDINARY_NAME="debaaf3pa"
+CLOUDINARY_KEY= "836863524343859"
+CLOUDINARY_SECRET="-WfcEQgi8qHwyy5wTQ4FX9BwA0Y"
+CLOUDINARY_URL="cloudinary://836863524343859:-WfcEQgi8qHwyy5wTQ4FX9BwA0Y@debaaf3pa"
