@@ -6,11 +6,11 @@ export const createBillPDF = async (order, user) => {
     const doc = new PDFDocument({ margin: 50 });
 
     doc.pipe(fs.createWriteStream('./public/bills/invoice.pdf'));
-
+// doc.font('Helvetica ')
     // Header
     doc
       .fontSize(20)
-      .text(' NEO CLOTHING', { align: 'left' })
+      .text('NEO CLOTHING', { align: 'left' })
       .fontSize(10)
       .text('BRIGHT LIKE NEO', { align: 'left' })
       .moveDown()
@@ -45,26 +45,25 @@ export const createBillPDF = async (order, user) => {
     order.cartItems.forEach((item, index) => {
       doc
         .text(index + 1, 50, y)
-        .text(item.productName, 100, y)
-        .text(`₹${Number(item.price).toFixed(2)}`, 300, y)
+        .text(item.title, 100, y)
+        .text(`Rs.${Number(item.price).toFixed(2)}`, 300, y)
         .text(user.quantity, 370, y)
-        .text(`₹${(Number(item.price) * item.qty).toFixed(2)}`, 420, y);
+        .text(`Rs.${(Number(item.price) * item.qty).toFixed(2)}`, 420, y);
       y += 20;
     });
 
     // Summary
     doc
       .moveDown()
-      .text(`Sub Total: ₹${Number(order.itemsPrice).toFixed(2)}`, { align: 'right' })
-      .text(`Shipping Price: ₹${Number(order.shippingPrice).toFixed(2)}`, { align: 'right' })
-      .text(`Tax Price: ₹${Number(order.taxPrice).toFixed(2)}`, { align: 'right' })
-      .text(`Total Price: ₹${Number(order.totalPrice).toFixed(2)}`, { align: 'right' })
+      .text(`Sub Total:  Rs.${Number(order.itemsPrice).toFixed(2)}`, { align: 'right' })
+      .text(`Shipping Price: Rs.${Number(order.shippingPrice).toFixed(2)}`, { align: 'right' })
+      .text(`Tax Price: Rs.${Number(order.taxPrice).toFixed(2)}`, { align: 'right' })
+      .text(`Total Price: Rs.${Number(order.totalPrice).toFixed(2)}`, { align: 'right' })
       .moveDown();
 
     // Footer
-    // doc
-    //   .text('Thank you for your business', { align: 'center' })
-    //   .moveDown()
+    doc.text('Thank you for buying',  250,720)
+      .moveDown().moveDown()
     //   .text('Payment Info:', { align: 'left' })
     //   .text(`Account #: ${order.paymentInfo.accountNumber}`, { align: 'left' })
     //   .text(`AC Name: ${order.paymentInfo.accountName}`, { align: 'left' })
